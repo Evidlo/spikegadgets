@@ -24,7 +24,7 @@ class Counter(Elaboratable):
         # divide clock
         with m.If(self.counter == self.divide - 1):
             m.d.sync += self.counter.eq(0)
-            m.d.sync += self.led_out.eq(self.v + 1)
+            m.d.sync += self.led_out.eq(self.led_out + 1)
 
         return m
 
@@ -40,11 +40,12 @@ def sim(ticks: int = 20, divide: int = 1):
     s = Simulator(counter)
     def process():
         for i in range(ticks):
-            print("count =", (yield counter.v))
+            print("count =", (yield counter.led_out))
             yield Tick()
     s.add_clock(1e-6)
     s.add_sync_process(process)
-    s.run()
+    with s.write_vcd('dump.vcd', 'dump.gtkw'):
+        s.run()
 
 
 @app.command()
