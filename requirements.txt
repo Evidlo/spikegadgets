@@ -1,0 +1,5 @@
+nmigen
+nmigen-soc
+yowasp-yosys
+yowasp-nextpnr-ecp5-all
+typer
